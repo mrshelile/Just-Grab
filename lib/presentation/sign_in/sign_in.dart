@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:justgrab/application/auth/auth.dart';
 import 'package:justgrab/colors.dart';
 import 'package:justgrab/presentation/home/Home.dart';
 
@@ -15,7 +15,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String _error = '';
   @override
@@ -31,11 +31,29 @@ class _SignInState extends State<SignIn> {
             color: gold1,
           ),
           onPressed: () async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Home(),
-                ));
+            if (_formKey.currentState!.validate()) {
+              // ignore: unnecessary_null_comparison
+              if (_emailController.text.toString() != null ||
+                  _emailController.text.toString() != "") {
+                var res = await Auth().userLogin(
+                    emailAddress: _emailController.text.trim(),
+                    password: _passwordController.text.trim());
+                if (res.status.code == 200) {
+                  setState(() {
+                    this._error = '';
+                  });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Home(),
+                      ));
+                } else {
+                  setState(() {
+                    this._error = res.body;
+                  });
+                }
+              }
+            }
           },
         ),
         body: Stack(
@@ -53,19 +71,20 @@ class _SignInState extends State<SignIn> {
                   child: ListView(
                     children: [
                       TextFormField(
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        controller: _usernameController,
+                        // inputFormatters: <TextInputFormatter>[
+                        //   FilteringTextInputFormatter.digitsOnly,
+                        // ],
+                        controller: _emailController,
                         validator: Validators.compose([
-                          Validators.required('ID number is required'),
+                          Validators.required('Email  is required'),
 
                           // Validators.email('wrong email format'),
                         ]),
-                        keyboardType: TextInputType.number,
+                        // keyboardType: TextInputType.number,
+                        style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                             fillColor: Colors.white,
-                            labelStyle: const TextStyle(color: Colors.cyan),
+                            labelStyle: const TextStyle(color: Colors.black),
                             focusColor: reeed1,
                             border: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(45)),
@@ -75,7 +94,7 @@ class _SignInState extends State<SignIn> {
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: brown1),
                             ),
-                            labelText: "National ID number"),
+                            labelText: "Email Address"),
                       ),
                       SizedBox(
                         height: size.height * 0.05,
@@ -90,7 +109,7 @@ class _SignInState extends State<SignIn> {
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             fillColor: Colors.white,
-                            labelStyle: const TextStyle(color: Colors.cyan),
+                            labelStyle: TextStyle(color: Colors.black),
                             focusColor: reeed1,
                             border: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(45)),
@@ -98,7 +117,7 @@ class _SignInState extends State<SignIn> {
                             focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black)),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: gold1),
+                              borderSide: BorderSide(color: Colors.black),
                             ),
                             labelText: "Password"),
                       ),

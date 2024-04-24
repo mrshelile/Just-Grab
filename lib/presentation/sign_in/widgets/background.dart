@@ -16,7 +16,7 @@ class Background extends StatelessWidget {
           //upper clippath with less height
           clipper: WaveClipperTop(flip: true), //set our custom wave clipper.
           child: Container(
-              color: gold1,
+              color: brown1,
               height: size.height * 0.3,
               width: size.width,
               alignment: Alignment.center,
@@ -29,7 +29,7 @@ class Background extends StatelessWidget {
             clipper:
                 WaveClipperButtom(flip: false), //set our custom wave clipper.
             child: Container(
-                color: brown1,
+                color: gold1,
                 height: size.height * 0.3,
                 width: size.width,
                 alignment: Alignment.center,
@@ -37,7 +37,7 @@ class Background extends StatelessWidget {
           ),
         ),
         Align(
-          alignment: Alignment.topRight,
+          alignment: Alignment.topLeft,
           child: SizedBox(
               width: size.width * 0.6,
               height: size.height * 0.4,

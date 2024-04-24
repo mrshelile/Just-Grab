@@ -1,4 +1,3 @@
-//Costom CLipper class with Path
 import 'package:flutter/material.dart';
 import 'dart:math' show pi;
 
@@ -16,26 +15,13 @@ class Background1 extends StatelessWidget {
           //upper clippath with less height
           clipper: WaveClipperTop(flip: false), //set our custom wave clipper.
           child: Container(
-              color: gold1,
+              color: brown1,
               height: size.height * 0.3,
               width: size.width,
               alignment: Alignment.center,
               child: SizedBox()),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ClipPath(
-            //upper clippath with less height
-            clipper:
-                WaveClipperButtom(flip: true), //set our custom wave clipper.
-            child: Container(
-                color: brown1,
-                height: size.height * 0.3,
-                width: size.width,
-                alignment: Alignment.center,
-                child: SizedBox()),
-          ),
-        ),
+      
         Align(
           alignment: Alignment.topRight,
           child: SizedBox(
