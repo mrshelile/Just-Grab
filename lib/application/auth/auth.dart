@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class Auth {
-  final _auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
   Future<Response> userLogin(
       {required String emailAddress, required String password}) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: emailAddress, password: password);
       // var de = await firestore.collection("users");
 
@@ -31,7 +31,7 @@ class Auth {
       required String phone}) async {
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+          await auth.createUserWithEmailAndPassword(
               email: emailAddress, password: password);
 
       await firestore.collection("users").add({

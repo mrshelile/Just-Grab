@@ -3,7 +3,7 @@ import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:flutter/material.dart';
 import 'package:justgrab/colors.dart';
 import 'package:justgrab/presentation/home/pages/blocklist/Blocklist.dart';
-import 'package:justgrab/presentation/home/pages/clients/Client.dart';
+import 'package:justgrab/presentation/home/pages/Cart/cart.dart';
 import 'package:justgrab/presentation/home/pages/product/product.dart';
 import 'package:justgrab/presentation/home/widgets/TabItems.dart';
 
@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int visit = 0;
-  final List<Widget> screens = [Products(), Client(), Blocklist()];
+  final List<Widget> screens = [Products(), CartPage(), Blocklist()];
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).copyWith().size;

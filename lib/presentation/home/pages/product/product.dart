@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:justgrab/colors.dart';
 import 'package:justgrab/data/home/remote/DTOs/product.dart';
-import 'package:justgrab/data/home/remote/sources/product1_data.dart';
-import 'package:justgrab/domain/Product/product.dart';
+
 import 'package:justgrab/presentation/home/pages/product/pages/food_page.dart';
 
 class Products extends StatefulWidget {
@@ -17,11 +15,6 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  List<String> productImage = [
-    "assets/drink1.png",
-    "assets/res1.jpg",
-    "assets/res2.png"
-  ];
   ProductModel food = ProductModel(
       restaurant_location: '',
       description: '',
@@ -30,7 +23,8 @@ class _ProductsState extends State<Products> {
       restaurant_email_address: '',
       price: 0.0,
       name: '',
-      restaurant_phone_number: '');
+      restaurant_phone_number: '',
+      productId: '');
   Future<String> getImageDownloadUrl() async {
     final storageRef = FirebaseStorage.instance.ref().child('im12.jpeg');
 
@@ -133,6 +127,7 @@ class _ProductsState extends State<Products> {
                                     food.imageUrl = imageSnap.data!.toString();
                                     food.price =
                                         double.parse(data['price'].toString());
+                                    food.productId = document.id;
                                     return Container(
                                       width: size.width,
                                       height: size.height * 0.17,

@@ -8,7 +8,5 @@ class ClientModel {
   List<Product> _orders = [];
   List<Product> _cart = [];
 
-  void setOrder({required Product order}) {
-    this._orders.add(order);
-  }
+ 
 }
