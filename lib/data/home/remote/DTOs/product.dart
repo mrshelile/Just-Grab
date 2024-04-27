@@ -1,13 +1,19 @@
 class ProductModel {
   String name;
-  String phone_number;
-  String email_address;
-  String sub_name;
-  String location;
+  String description;
+  double price;
+  String restaurant_phone_number;
+  String restaurant_email_address;
+  String restaurant_name;
+  var restaurant_location;
+  String imageUrl;
   ProductModel(
-      {required this.location,
-      required this.sub_name,
-      required this.email_address,
+      {required this.restaurant_location,
+      required this.description,
+      required this.imageUrl,
+      required this.restaurant_name,
+      required this.restaurant_email_address,
+      required this.price,
       required this.name,
-      required this.phone_number});
+      required this.restaurant_phone_number});
 }

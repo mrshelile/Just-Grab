@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:math';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:justgrab/colors.dart';
+import 'package:justgrab/data/home/remote/DTOs/product.dart';
 import 'package:justgrab/data/home/remote/sources/product1_data.dart';
+import 'package:justgrab/domain/Product/product.dart';
 import 'package:justgrab/presentation/home/pages/product/pages/food_page.dart';
 
 class Products extends StatefulWidget {
@@ -19,11 +22,32 @@ class _ProductsState extends State<Products> {
     "assets/res1.jpg",
     "assets/res2.png"
   ];
+  ProductModel food = ProductModel(
+      restaurant_location: '',
+      description: '',
+      imageUrl: "",
+      restaurant_name: '',
+      restaurant_email_address: '',
+      price: 0.0,
+      name: '',
+      restaurant_phone_number: '');
+  Future<String> getImageDownloadUrl() async {
+    final storageRef = FirebaseStorage.instance.ref().child('im12.jpeg');
+
+    try {
+      final url = await storageRef.getDownloadURL();
+      return url;
+    } catch (error) {
+      // Handle error getting download URL
+      print(error);
+      return "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).copyWith().size;
-    Random random = Random();
+
     return Container(
         padding: EdgeInsets.only(
           left: size.width * 0.03,
@@ -32,30 +56,45 @@ class _ProductsState extends State<Products> {
         width: size.width * 1,
         child: StreamBuilder(
           builder: (context, snapshot) {
-            if (snapshot.hasError || !snapshot.hasData) {
-              return const SizedBox();
+            if (snapshot.hasError) {
+              return Text('Error fetching restaurant data');
+            }
+            if (!snapshot.hasData) {
+              return SizedBox();
             }
             return GridView(
-              scrollDirection: Axis.vertical,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 16 / 23,
                   crossAxisSpacing: 16,
                   crossAxisCount: 2,
                   mainAxisSpacing: 16),
-              children: List.generate(
-                  snapshot.data!.length,
-                  (index) => GestureDetector(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+
+                return FutureBuilder(
+                  future: (data['restaurant_id']
+                          as DocumentReference<Map<String, dynamic>>)
+                      .get(),
+                  builder: (context, snapshot1) {
+                    if (snapshot1.hasError) {
+                      return Text('Error fetching restaurant data');
+                    }
+                    if (!snapshot1.hasData) {
+                      return SizedBox();
+                    }
+                    return GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => FoodDetail(),
+                                builder: (context) => FoodDetail(
+                                  item: food,
+                                ),
                               ));
                         },
                         child: Container(
-                          // margin: EdgeInsets.all(5),
                           height: 200,
-                          // padding: EdgeInsets.all(70),
                           decoration: BoxDecoration(
                               boxShadow: const [
                                 BoxShadow(
@@ -71,34 +110,55 @@ class _ProductsState extends State<Products> {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white),
                           child: Wrap(
-                            // crossAxisAlignment: CrossAxisAlignment.start,
                             crossAxisAlignment: WrapCrossAlignment.start,
                             children: [
-                              Container(
-                                width: size.width,
-                                height: size.height * 0.17,
-                                decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10)),
-                                    image: DecorationImage(
-                                        image: AssetImage(productImage[random
-                                            .nextInt(productImage.length)]),
-                                        fit: BoxFit.cover)),
-                              ),
+                              StreamBuilder<Object>(
+                                  stream: getImageDownloadUrl().asStream(),
+                                  builder: (context, imageSnap) {
+                                    if (imageSnap.hasError) {
+                                      return SizedBox();
+                                    }
+                                    if (!imageSnap.hasData) return SizedBox();
+                                    // print(imageSnap.data);
+                                    food.name = data['title'];
+                                    food.restaurant_name =
+                                        snapshot1.data!.data()!['name'];
+                                    food.restaurant_email_address =
+                                        snapshot1.data!.data()!['email'];
+                                    food.restaurant_location =
+                                        snapshot1.data!.data()!['location'];
+                                    food.restaurant_phone_number =
+                                        snapshot1.data!.data()!['phone_number'];
+                                    food.description = data['description'];
+                                    food.imageUrl = imageSnap.data!.toString();
+                                    food.price =
+                                        double.parse(data['price'].toString());
+                                    return Container(
+                                      width: size.width,
+                                      height: size.height * 0.17,
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  imageSnap.data!.toString()),
+                                              fit: BoxFit.cover)),
+                                    );
+                                  }),
                               const SizedBox(
                                 height: 5,
                               ),
                               Container(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    snapshot.data[index].name,
+                                    data['title'],
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold),
                                   )),
                               Container(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    snapshot.data[index].sub_name,
+                                    snapshot1.data!.data()!['name'],
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 12),
@@ -106,7 +166,7 @@ class _ProductsState extends State<Products> {
                               Container(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    snapshot.data[index].email_address,
+                                    snapshot1.data!.data()!['email'],
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 12),
@@ -114,7 +174,7 @@ class _ProductsState extends State<Products> {
                               Container(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    snapshot.data[index].phone_number,
+                                    snapshot1.data!.data()!['phone_number'],
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 12),
@@ -129,7 +189,8 @@ class _ProductsState extends State<Products> {
                                         color: gold1,
                                       ),
                                       Text(
-                                        snapshot.data[index].location,
+                                        snapshot1.data!.data()!['location']
+                                            ['district'],
                                         style: const TextStyle(
                                             fontWeight: FontWeight.normal,
                                             fontSize: 12),
@@ -138,11 +199,13 @@ class _ProductsState extends State<Products> {
                                   )),
                             ],
                           ),
-                        ),
-                      )),
+                        ));
+                  },
+                );
+              }).toList(),
             );
           },
-          stream: ProductData().getData(),
+          stream: FirebaseFirestore.instance.collection('meals').snapshots(),
         ));
   }
 }

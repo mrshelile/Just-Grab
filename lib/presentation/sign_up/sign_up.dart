@@ -169,7 +169,9 @@ class _SignUpState extends State<SignUp> {
                               _error = "";
                             });
                             if (_rePasswordController.text.trim().isNotEmpty &&
-                                _passwordController.text.trim().isNotEmpty) {
+                                _passwordController.text.trim().isNotEmpty &&
+                                (_passwordController.text.trim() ==
+                                    _rePasswordController.text.trim())) {
                               final res = await Auth().signUp(
                                   emailAddress: _emailController.text.trim(),
                                   password: _passwordController.text.trim(),
