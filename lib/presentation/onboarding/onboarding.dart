@@ -21,12 +21,12 @@ class OnBoarding extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Consult with the ",
+                "Come and dine with",
                 style: TextStyle(
                     fontSize: 20, fontWeight: FontWeight.w900, color: brown1),
               ),
               Text(
-                "Best Doctors",
+                "The best Chefs",
                 style: TextStyle(
                     fontSize: 20, fontWeight: FontWeight.w700, color: gold1),
               ),

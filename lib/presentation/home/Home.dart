@@ -2,7 +2,7 @@ import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:flutter/material.dart';
 import 'package:justgrab/colors.dart';
-import 'package:justgrab/presentation/home/pages/blocklist/Blocklist.dart';
+import 'package:justgrab/presentation/home/pages/orders/orders.dart';
 import 'package:justgrab/presentation/home/pages/Cart/cart.dart';
 import 'package:justgrab/presentation/home/pages/product/product.dart';
 import 'package:justgrab/presentation/home/widgets/TabItems.dart';

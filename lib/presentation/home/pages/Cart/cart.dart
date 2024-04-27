@@ -167,7 +167,8 @@ class _CartPageState extends State<CartPage> {
                                                 : "delivery service",
                                             deliveryman: deliveryOp == 1
                                                 ? selectedDeliver
-                                                : null);
+                                                : null,
+                                            totalPrice: priceTot);
                                       } catch (e) {
                                         print(e);
                                       }

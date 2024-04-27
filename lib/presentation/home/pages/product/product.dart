@@ -25,8 +25,8 @@ class _ProductsState extends State<Products> {
       name: '',
       restaurant_phone_number: '',
       productId: '');
-  Future<String> getImageDownloadUrl() async {
-    final storageRef = FirebaseStorage.instance.ref().child('im12.jpeg');
+  Future<String> getImageDownloadUrl({required String img}) async {
+    final storageRef = FirebaseStorage.instance.ref().child(img);
 
     try {
       final url = await storageRef.getDownloadURL();
@@ -107,7 +107,9 @@ class _ProductsState extends State<Products> {
                             crossAxisAlignment: WrapCrossAlignment.start,
                             children: [
                               StreamBuilder<Object>(
-                                  stream: getImageDownloadUrl().asStream(),
+                                  stream:
+                                      getImageDownloadUrl(img: data['image'])
+                                          .asStream(),
                                   builder: (context, imageSnap) {
                                     if (imageSnap.hasError) {
                                       return SizedBox();
