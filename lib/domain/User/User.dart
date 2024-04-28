@@ -1,12 +1,15 @@
 import 'package:justgrab/domain/Product/product.dart';
 
 class ClientModel {
-  ClientModel({required this.emailAddress});
-  String? _fullName;
+  ClientModel(
+      {required this.emailAddress,
+      this.fullName,
+      this.cart,
+      this.orders,
+      this.location});
+  String? fullName;
   String emailAddress;
-  Map? _location;
-  List<Product> _orders = [];
-  List<Product> _cart = [];
-
- 
+  Map? location;
+  List<Product>? orders = [];
+  List<Product>? cart = [];
 }
