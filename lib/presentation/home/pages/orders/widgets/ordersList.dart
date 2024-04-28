@@ -110,7 +110,7 @@ class _OrdersListState extends State<OrdersList> {
                               if (imageSnap.hasError) {
                                 return SizedBox();
                               }
-                              if (!imageSnap.hasData) return SizedBox();
+                              if (!imageSnap.hasData) return const SizedBox();
                               return Image.network(
                                 imageSnap.data.toString(),
                                 height: size.height * 0.05,
