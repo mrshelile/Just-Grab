@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:justgrab/data/home/remote/DTOs/product.dart';
 
 class ProductData {
   Stream getData() {

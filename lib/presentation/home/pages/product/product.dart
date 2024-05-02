@@ -64,7 +64,7 @@ class _ProductsState extends State<Products> {
                   mainAxisSpacing: 16),
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
+                    document.data() as Map<String, dynamic>;
 
                 return FutureBuilder(
                   future: (data['restaurant_id']
