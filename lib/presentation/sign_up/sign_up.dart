@@ -14,7 +14,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool isEmailCorrect = false;
-  bool isObscure = false;
+  bool isObscure = true;
   String _error = "";
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -178,7 +178,7 @@ class _SignUpState extends State<SignUp> {
                                   fullName: _fullNameController.text.trim(),
                                   phone: _phoneNumberController.text.trim());
                               if (res.statusCode == 201) {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => SignIn(),

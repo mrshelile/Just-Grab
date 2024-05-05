@@ -30,15 +30,16 @@ class Auth {
       required String fullName,
       required String phone}) async {
     try {
-      UserCredential userCredential =
-          await auth.createUserWithEmailAndPassword(
-              email: emailAddress, password: password);
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: emailAddress, password: password);
 
       await firestore.collection("users").add({
         "full_name": fullName,
         "phone_number": phone,
         "location": {},
         "orders": [],
+        "allowed": true,
+        "email":emailAddress,
         "user_id": userCredential.user!.uid
       });
       return const Response(statusCode: 201, body: "user created");

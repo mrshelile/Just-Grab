@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justgrab/colors.dart';
@@ -47,7 +49,7 @@ class OnBoarding extends StatelessWidget {
                   ),
                   onPressed: () {
                     // print("pressed");
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => SignIn()),
                     );
@@ -64,7 +66,11 @@ class OnBoarding extends StatelessWidget {
           //upper clippath with less height
           clipper: WaveClipper(), //set our custom wave clipper.
           child: Container(
-              color: gold1,
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                Color.fromARGB(255, 94, 94, 94),
+                Color.fromARGB(255, 164, 163, 88)
+              ])),
               height: size.height,
               alignment: Alignment.center,
               child: const Text(
@@ -76,11 +82,11 @@ class OnBoarding extends StatelessWidget {
               )),
         ),
         Positioned(
-            left: size.width * 0.02,
-            top: size.height * 0.2,
+            left: size.width * 0.04,
+            top: size.height * 0.25,
             child: SizedBox(
               width: size.width,
-              child: Image.asset("assets/coffee.png"),
+              child: Image.asset("assets/sit.png"),
             ))
       ],
     ));
