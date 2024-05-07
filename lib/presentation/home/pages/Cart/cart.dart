@@ -133,7 +133,7 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                   if (deliveryOp == 1)
                                     ListTile(
-                                        leading: Icon(Icons.drive_eta),
+                                        leading: const Icon(Icons.drive_eta),
                                         title: DropdownMenu(
                                             enableSearch: true,
                                             initialSelection: "Thabo Trans",

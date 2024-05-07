@@ -15,16 +15,17 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  ProductModel food = ProductModel(
-      restaurant_location: '',
-      description: '',
-      imageUrl: "",
-      restaurant_name: '',
-      restaurant_email_address: '',
-      price: 0.0,
-      name: '',
-      restaurant_phone_number: '',
-      productId: '');
+  // ProductModel food = ProductModel(
+  //     restaurant_location: '',
+  //     description: '',
+  //     imageUrl: "",
+  //     restaurant_name: '',
+  //     restaurant_email_address: '',
+  //     price: 0.0,
+  //     name: '',
+  //     restaurant_phone_number: '',
+  //     productId: '');
+  // List<ProductModel> foods = [];
   Future<String> getImageDownloadUrl({required String img}) async {
     final storageRef = FirebaseStorage.instance.ref().child(img);
 
@@ -62,9 +63,8 @@ class _ProductsState extends State<Products> {
                   crossAxisSpacing: 16,
                   crossAxisCount: 2,
                   mainAxisSpacing: 16),
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data() as Map<String, dynamic>;
+              children: snapshot.data!.docs.map((document) {
+                Map<String, dynamic> data = document.data();
 
                 return FutureBuilder(
                   future: (data['restaurant_id']
@@ -77,126 +77,147 @@ class _ProductsState extends State<Products> {
                     if (!snapshot1.hasData) {
                       return SizedBox();
                     }
-                    return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FoodDetail(
-                                  item: food,
-                                ),
-                              ));
-                        },
-                        child: Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromARGB(255, 216, 221, 219),
-                                  offset: Offset(
-                                    5,
-                                    5.0,
-                                  ),
-                                  blurRadius: 15.0,
-                                  spreadRadius: 1.0,
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white),
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.start,
-                            children: [
-                              StreamBuilder<Object>(
-                                  stream:
-                                      getImageDownloadUrl(img: data['image'])
-                                          .asStream(),
-                                  builder: (context, imageSnap) {
-                                    if (imageSnap.hasError) {
-                                      return SizedBox();
-                                    }
-                                    if (!imageSnap.hasData) return SizedBox();
-                                    // print(imageSnap.data);
-                                    food.name = data['title'];
-                                    food.restaurant_name =
-                                        snapshot1.data!.data()!['name'];
-                                    food.restaurant_email_address =
-                                        snapshot1.data!.data()!['email'];
-                                    food.restaurant_location =
-                                        snapshot1.data!.data()!['location'];
-                                    food.restaurant_phone_number =
-                                        snapshot1.data!.data()!['phone_number'];
-                                    food.description = data['description'];
-                                    food.imageUrl = imageSnap.data!.toString();
-                                    food.price =
-                                        double.parse(data['price'].toString());
-                                    food.productId = document.id;
-                                    return Container(
-                                      width: size.width,
-                                      height: size.height * 0.17,
-                                      decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  imageSnap.data!.toString()),
-                                              fit: BoxFit.cover)),
-                                    );
-                                  }),
-                              const SizedBox(
-                                height: 5,
+
+                    return Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 216, 221, 219),
+                              offset: Offset(
+                                5,
+                                5.0,
                               ),
-                              Container(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    data['title'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                              Container(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    snapshot1.data!.data()!['name'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12),
-                                  )),
-                              Container(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    snapshot1.data!.data()!['email'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12),
-                                  )),
-                              Container(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    snapshot1.data!.data()!['phone_number'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12),
-                                  )),
-                              Container(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: gold1,
-                                      ),
-                                      Text(
-                                        snapshot1.data!.data()!['location']
-                                            ['district'],
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12),
-                                      ),
-                                    ],
-                                  )),
-                            ],
+                              blurRadius: 15.0,
+                              spreadRadius: 1.0,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        children: [
+                          StreamBuilder<Object>(
+                              stream: getImageDownloadUrl(img: data['image'])
+                                  .asStream(),
+                              builder: (context, imageSnap) {
+                                if (imageSnap.hasError) {
+                                  return SizedBox();
+                                }
+                                if (!imageSnap.hasData) return const SizedBox();
+
+                                // foods.add(ProductModel(
+                                //     restaurant_location:
+                                //         snapshot1.data!.data()!['location'],
+                                //     description: data['description'],
+                                //     imageUrl: imageSnap.data!.toString(),
+                                //     productId: '',
+                                //     restaurant_name: snapshot1.data!
+                                //         .data()!['full_name'],
+                                //     restaurant_email_address:
+                                //         snapshot1.data!.data()!['email'],
+                                //     price: double.parse(
+                                //         data['price'].toString()),
+                                //     name: data['name'],
+                                //     restaurant_phone_number: snapshot1.data!
+                                //         .data()!['phone_number']));
+                                // print(foods);
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => FoodDetail(
+                                            item: ProductModel(
+                                              description: data['description'],
+                                              restaurant_location: snapshot1
+                                                  .data!
+                                                  .data()!['location'],
+                                              imageUrl:
+                                                  imageSnap.data!.toString(),
+                                              productId: document.id,
+                                              restaurant_name: snapshot1.data!
+                                                  .data()!['full_name'],
+                                              restaurant_email_address:
+                                                  snapshot1.data!
+                                                      .data()!['email'],
+                                              price: double.parse(
+                                                  data['price'].toString()),
+                                              name: data['name'],
+                                              restaurant_phone_number: snapshot1
+                                                  .data!
+                                                  .data()!['phone_number'],
+                                            ),
+                                          ),
+                                        ));
+                                  },
+                                  child: Container(
+                                    width: size.width,
+                                    height: size.height * 0.17,
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10)),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                imageSnap.data!.toString()),
+                                            fit: BoxFit.cover)),
+                                  ),
+                                );
+                              }),
+                          const SizedBox(
+                            height: 5,
                           ),
-                        ));
+                          Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                data['name'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                snapshot1.data!.data()!['full_name'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                snapshot1.data!.data()!['email'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                snapshot1.data!.data()!['phone_number'],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: gold1,
+                                  ),
+                                  Text(
+                                    snapshot1.data!.data()!['location'],
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ),
+                    );
                   },
                 );
               }).toList(),
