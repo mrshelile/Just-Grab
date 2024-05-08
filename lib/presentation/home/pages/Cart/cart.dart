@@ -95,7 +95,7 @@ class _CartPageState extends State<CartPage> {
                                   ListTile(
                                     leading: const Icon(Icons.price_change),
                                     title:
-                                        Text('price: M' + priceTot.toString()),
+                                        Text('price: M$priceTot'),
                                   ),
                                   ListTile(
                                     leading: const Icon(Icons.delivery_dining),
