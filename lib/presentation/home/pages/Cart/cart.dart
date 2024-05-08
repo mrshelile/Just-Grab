@@ -16,6 +16,7 @@ class _CartPageState extends State<CartPage> {
   final storeController = Get.find<Store>();
   int deliveryOp = 0;
   String selectedDeliver = 'Thabo Trans';
+  final locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).copyWith().size;
@@ -94,8 +95,7 @@ class _CartPageState extends State<CartPage> {
                                 children: [
                                   ListTile(
                                     leading: const Icon(Icons.price_change),
-                                    title:
-                                        Text('price: M$priceTot'),
+                                    title: Text('price: M$priceTot'),
                                   ),
                                   ListTile(
                                     leading: const Icon(Icons.delivery_dining),
@@ -131,7 +131,7 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                     ),
                                   ),
-                                  if (deliveryOp == 1)
+                                  if (deliveryOp == 1) ...[
                                     ListTile(
                                         leading: const Icon(Icons.drive_eta),
                                         title: DropdownMenu(
@@ -156,11 +156,32 @@ class _CartPageState extends State<CartPage> {
                                                   value: "Come Pick me Trans",
                                                   label: "Come Pick me Trans")
                                             ])),
+                                    ListTile(
+                                      leading: const Icon(Icons.location_on),
+                                      title: TextFormField(
+                                        controller: locationController,
+                                        decoration: const InputDecoration(
+                                            // labelText: "Location",
+                                            hintText: "eg Ha tsolo"),
+                                      ),
+                                    ),
+                                  ],
                                   ListTile(
                                     selected: true,
                                     onTap: () async {
                                       try {
+                                        if (deliveryOp != 0) {
+                                          if (locationController.text
+                                                  .toString() ==
+                                              "") {
+                                            throw Exception("field empty");
+                                          }
+                                        }
                                         await UserController().createUserOrder(
+                                            location: deliveryOp == 0
+                                                ? "default"
+                                                : locationController.text
+                                                    .trim(),
                                             orders: storeController.cart,
                                             deliveryType: deliveryOp == 0
                                                 ? "pick up"
@@ -169,11 +190,11 @@ class _CartPageState extends State<CartPage> {
                                                 ? selectedDeliver
                                                 : null,
                                             totalPrice: priceTot);
+                                        storeController.resetCart();
+                                        Navigator.pop(context);
                                       } catch (e) {
                                         print(e);
                                       }
-                                      storeController.resetCart();
-                                      Navigator.pop(context);
                                     },
                                     selectedTileColor: gold1,
                                     leading: Icon(

@@ -11,16 +11,25 @@ class Auth {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: emailAddress, password: password);
       // var de = await firestore.collection("users");
-
+      var res = await firestore
+          .collection("users")
+          .where("user_id", isEqualTo: userCredential.user!.uid)
+          .where("allowed", isEqualTo: true)
+          .get();
+      if (res.docs.isEmpty) {
+        throw FirebaseAuthException(code: "not-client");
+      }
       return const Response(statusCode: 200, body: "Authenticated");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return const Response(statusCode: 204, body: "User not found");
       } else if (e.code == 'wrong-password') {
         return const Response(statusCode: 401, body: "Wrong password");
+      } else if (e.code == 'not-client') {
+        return const Response(statusCode: 400, body: "unauthenticated");
       }
 
-      return const Response(statusCode: 500, body: "no connection");
+      return const Response(statusCode: 500, body: "Wrong credetials");
     }
   }
 
@@ -36,10 +45,10 @@ class Auth {
       await firestore.collection("users").add({
         "full_name": fullName,
         "phone_number": phone,
-        "location": {},
+        "location": "",
         "orders": [],
         "allowed": true,
-        "email":emailAddress,
+        "email": emailAddress,
         "user_id": userCredential.user!.uid
       });
       return const Response(statusCode: 201, body: "user created");

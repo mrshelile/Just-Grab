@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:justgrab/presentation/home/pages/orders/widgets/ordersList.dart';
 
-class Blocklist extends StatefulWidget {
-  const Blocklist({super.key});
+class Orders extends StatefulWidget {
+  const Orders({super.key});
 
   @override
-  State<Blocklist> createState() => _BlocklistState();
+  State<Orders> createState() => _OrdersState();
 }
 
-class _BlocklistState extends State<Blocklist> {
+class _OrdersState extends State<Orders> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).copyWith().size;

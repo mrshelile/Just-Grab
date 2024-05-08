@@ -86,13 +86,14 @@ class _OrdersListState extends State<OrdersList> {
                                 onPressed: () async {
                                   try {
                                     await UserController()
-                                        .approveArrivalOfProduct();
+                                        .approveArrivalOfProduct(
+                                            order: data[index].id);
                                   } catch (e) {
                                     print(e);
                                   }
                                 },
                                 icon: Icon(
-                                  Icons.approval,
+                                  Icons.delivery_dining,
                                   color: brown1,
                                   size: 35,
                                 ))
@@ -117,7 +118,7 @@ class _OrdersListState extends State<OrdersList> {
                               );
                             }),
                         title: Text(
-                            "Order total: M${(data[index].data()! as Map)['total_price'].toString()}"),
+                            "price: M${(data[index].data()! as Map)['total_price'].toString()}"),
                         subtitle: Text(
                           snapshot.data!.docs[index].id,
                           style: const TextStyle(fontWeight: FontWeight.w300),

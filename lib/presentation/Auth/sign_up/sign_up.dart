@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:justgrab/application/auth/auth.dart';
 import 'package:justgrab/colors.dart';
-import 'package:justgrab/presentation/sign_in/sign_in.dart';
-import 'package:justgrab/presentation/sign_up/widgets/Background.dart';
+import 'package:justgrab/presentation/Auth/sign_in/sign_in.dart';
+import 'package:justgrab/presentation/Auth/sign_up/widgets/Background.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
 class SignUp extends StatefulWidget {

@@ -5,19 +5,22 @@ import 'package:justgrab/application/auth/auth.dart';
 import 'package:justgrab/data/home/remote/DTOs/product.dart';
 
 class UserController {
-  Future approveArrivalOfProduct() async {
-    var res = await Auth()
-        .firestore
-        .collection("orders")
-        .where("client", isEqualTo: Auth().auth.currentUser!.uid)
-        .get();
-    return await res.docs.first.reference.update({"status": "approved"});
+  Future approveArrivalOfProduct({required String order}) async {
+    // var res = await Auth()
+    //     .firestore
+    //     .collection("orders")
+    //     .where("client", isEqualTo: Auth().auth.currentUser!.uid)
+    //     .get();
+
+    var res = await Auth().firestore.collection("orders").doc(order).get();
+    return await res.reference.update({"status": "delivered"});
   }
 
   Future createUserOrder(
       {required List<ProductModel> orders,
       required double totalPrice,
       required String deliveryType,
+      required String location,
       String? deliveryman}) async {
     List prepData = [];
     orders.forEach((ProductModel order) {
@@ -33,6 +36,7 @@ class UserController {
       "delivery_type": deliveryType,
       "delivery_man": deliveryman ?? Auth().auth.currentUser!.uid,
       "meals": prepData,
+      "location": location,
       "total_price": totalPrice
     });
   }

@@ -3,8 +3,8 @@ import 'package:justgrab/application/auth/auth.dart';
 import 'package:justgrab/colors.dart';
 import 'package:justgrab/presentation/home/Home.dart';
 
-import 'package:justgrab/presentation/sign_in/widgets/background.dart';
-import 'package:justgrab/presentation/sign_up/sign_up.dart';
+import 'package:justgrab/presentation/Auth/sign_in/widgets/background.dart';
+import 'package:justgrab/presentation/Auth/sign_up/sign_up.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
 class SignIn extends StatefulWidget {
@@ -17,6 +17,8 @@ class _SignInState extends State<SignIn> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String _error = '';
+
+  bool isObscure = true;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).copyWith().size;
@@ -41,7 +43,7 @@ class _SignInState extends State<SignIn> {
                   setState(() {
                     this._error = '';
                   });
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Home(),
@@ -52,6 +54,16 @@ class _SignInState extends State<SignIn> {
                   });
                 }
               }
+            }
+            if (_error.isNotEmpty) {
+              final snackdemo = SnackBar(
+                content: Text(_error),
+                backgroundColor: brown1,
+                elevation: 10,
+                behavior: SnackBarBehavior.floating,
+                margin: const EdgeInsets.all(5),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackdemo);
             }
           },
         ),
@@ -82,21 +94,15 @@ class _SignInState extends State<SignIn> {
                         // keyboardType: TextInputType.number,
                         style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
+                            suffix: IconButton(
+                                onPressed: () {
+                                  _emailController.clear();
+                                },
+                                icon: Icon(Icons.close)),
                             fillColor: Colors.white,
                             labelStyle: const TextStyle(color: Colors.black),
                             focusColor: reeed1,
-                            border: OutlineInputBorder(
-                                // borderRadius: BorderRadius.all(Radius.circular(45)),
-                                borderSide: BorderSide(color: brown1)),
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: brown1),
-                            ),
                             labelText: "Email Address"),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.05,
                       ),
                       TextFormField(
                         controller: _passwordController,
@@ -104,28 +110,26 @@ class _SignInState extends State<SignIn> {
                           Validators.required('Password is required'),
                           // Validators.email('wrong email format'),
                         ]),
-                        obscureText: true,
+                        obscureText: isObscure,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
+                            suffix: IconButton(
+                                onPressed: () => setState(() {
+                                      isObscure = !isObscure;
+                                    }),
+                                icon: Icon(
+                                  isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: brown1,
+                                )),
                             fillColor: Colors.white,
                             labelStyle: TextStyle(color: Colors.black),
                             focusColor: reeed1,
-                            border: OutlineInputBorder(
-                                // borderRadius: BorderRadius.all(Radius.circular(45)),
-                                borderSide: BorderSide(color: brown1)),
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                            ),
                             labelText: "Password"),
                       ),
                       SizedBox(
                         height: size.height * 0.01,
-                      ),
-                      Text(
-                        _error,
-                        style: const TextStyle(color: Colors.red),
                       ),
                       Center(
                           child: TextButton(

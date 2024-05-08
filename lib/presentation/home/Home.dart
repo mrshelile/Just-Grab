@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int visit = 0;
-  final List<Widget> screens = [Products(), CartPage(), Blocklist()];
+  final List<Widget> screens = [Products(), CartPage(), Orders()];
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).copyWith().size;
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
                   child: Text(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    "WELCOME BACK Malefetsane Shelile",
+                    "WELCOME BACK",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, color: brown1),
                   ),
